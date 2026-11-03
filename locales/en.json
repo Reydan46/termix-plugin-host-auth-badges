@@ -1,0 +1,194 @@
+{
+  "plugin": {
+    "name": "Host Auth Badges",
+    "description": "Compact configurable SSH authentication source and method badges for the host list."
+  },
+  "settings": {
+    "enabled": {
+      "label": "Show authentication badges",
+      "description": "Hide all badges without disabling the plugin."
+    },
+    "position": {
+      "label": "Position",
+      "description": "Before or after the host name; Host Icons stays first when both are before the name.",
+      "after": "After name",
+      "before": "Before name"
+    },
+    "sourceConfig": {
+      "label": "Source badge configuration"
+    },
+    "methodConfig": {
+      "label": "Method badge configuration"
+    },
+    "layoutVariant": {
+      "label": "Badge layout"
+    },
+    "palettePreset": {
+      "label": "Badge palette"
+    },
+    "textSize": {
+      "label": "Text size (%)",
+      "description": "Base label size from 60 to 220%."
+    },
+    "iconSize": {
+      "label": "Icon size (%)",
+      "description": "Base icon size from 60 to 260%, independent from text."
+    },
+    "host": {
+      "compositionOverride": {
+        "label": "Host Auth Badges appearance",
+        "description": "Visual appearance for this host or inherited defaults."
+      },
+      "sourceOverride": {
+        "label": "Source appearance override",
+        "description": "Stored source appearance; edited in the unified Host Auth Badges panel."
+      },
+      "methodOverride": {
+        "label": "Method appearance override",
+        "description": "Stored method appearance; edited in the unified Host Auth Badges panel."
+      }
+    }
+  },
+  "method": {
+    "full": {
+      "password": "Password",
+      "key": "SSH key",
+      "both": "Key and password",
+      "agent": "SSH agent",
+      "none": "None",
+      "custom": "Other method",
+      "unknown": "Unknown"
+    }
+  },
+  "source": {
+    "credential": "Stored Credential",
+    "host": "Host settings",
+    "plugin": "External auth provider",
+    "unknown": "Not determined"
+  },
+  "tooltip": {
+    "source": "Source",
+    "method": "Method",
+    "uncertain": "Authentication metadata is incomplete"
+  },
+  "ui": {
+    "title": "HOST AUTH BADGES",
+    "enabled": "Enabled",
+    "preview": "All combinations",
+    "live": "Live preview",
+    "layouts": "Layout",
+    "position": "Position",
+    "positions": {
+      "after": "After name",
+      "before": "Before name"
+    },
+    "layout": {
+      "separate": "Separate",
+      "joined": "Joined",
+      "bare": "Unframed",
+      "outline": "Outline",
+      "pill": "Pills",
+      "duotone": "DuoTone",
+      "flow": "Flow",
+      "emblem": "Emblem",
+      "joined-flat": "Joined flat",
+      "unified": "Unified",
+      "tagged": "Source tab",
+      "focus": "Method focus"
+    },
+    "palettes": {
+      "signature": "Contrast",
+      "neon": "Neon",
+      "ocean": "Ocean",
+      "forest": "Forest",
+      "sunset": "Sunset",
+      "retro": "Retro Earth",
+      "pastel": "Pastel Ice",
+      "monochrome": "Monochrome",
+      "nord": "Nord",
+      "gruvbox": "Gruvbox",
+      "dracula": "Dracula",
+      "tokyo": "Tokyo Night",
+      "solarized": "Solarized",
+      "catppuccin": "Catppuccin",
+      "industrial": "Industrial",
+      "terminal": "Terminal",
+      "ember": "Ember",
+      "aurora": "Aurora"
+    },
+    "source": "SOURCE · origin",
+    "method": "METHOD · login",
+    "values": {
+      "credential": "Credential",
+      "host": "Host",
+      "plugin": "Plugin",
+      "unknown": "Unknown",
+      "password": "Password",
+      "key": "Key",
+      "both": "Both",
+      "agent": "Agent",
+      "none": "None",
+      "custom": "Other"
+    },
+    "chooseIcon": "Choose icon",
+    "close": "Close",
+    "searchIcons": "Search icons…",
+    "noIcon": "No icon",
+    "noResults": "No results",
+    "toggleIcons": "Show/hide icons",
+    "toggleLabels": "Show/hide labels",
+    "resetLabels": "Reset text",
+    "resetLabel": "Reset label",
+    "label": "Label",
+    "color": "Color",
+    "resetAppearance": "Reset appearance",
+    "hint": "Termix Save applies the changes. Folder and host settings continue to inherit normally.",
+    "monoHint": "Monochrome ignores custom colors. Switch to another palette to edit accents.",
+    "colors": "Palette",
+    "text": "text",
+    "icon": "icon",
+    "textSize": "Text size",
+    "iconSize": "Icon size",
+    "intro": "See how SSH login is configured without opening each host. Badges do not test the connection or reveal secrets.",
+    "advancedTitle": "Customize Source and Method",
+    "hiddenPart": "hidden",
+    "unsavedTitle": "Unsaved changes",
+    "unsavedHelp": "Changes are temporarily applied to host badges. Press Save in Termix to keep them.",
+    "changeOn": "On",
+    "changeOff": "Off",
+    "moreChanges": "More changes",
+    "hintShort": "Save with Termix",
+    "hostSaveNote": "Host and folder changes apply to real hosts after Termix Save.",
+    "resetIcon": "Reset icon",
+    "resetColor": "Reset color",
+    "inheritHeading": "Inheritance / overrides",
+    "inheritResetAll": "Reset all overrides",
+    "inheritLimit": "Effective values shown below. Termix does not expose whether they were set here or inherited from a parent.",
+    "inheritEffectiveInfo": "Effective value; exact origin is not provided to plugins.",
+    "inheritComposition": "Layout & palette",
+    "inheritSource": "SOURCE",
+    "inheritMethod": "METHOD",
+    "inheritSingle": "Inherit",
+    "inheritSingleHint": "Request that Termix clears this value at the current level. Save in Termix to apply.",
+    "inheritCompare": "Compare with my user preferences",
+    "inheritMyDefaults": "My user preferences",
+    "inheritParentUnknown": "A parent folder or server may supply different values; this is only your personal baseline, not a guarantee of the resulting inheritance.",
+    "inheritConfirmTitle": "Clear all three appearance overrides?",
+    "inheritConfirmDescription": "The following effective appearance groups may include inherited values. This requests that the current level stops overriding them. No SSH connection settings or credentials are changed.",
+    "inheritAfterSave": "Press the normal Termix Save button. The final inherited values are recalculated by Termix and may differ from your user preferences.",
+    "inheritCancel": "Cancel",
+    "inheritConfirm": "Clear all three",
+    "inheritEffective": "effective value",
+    "inheritUnset": "no value visible",
+    "methodOnlyWarning": "Current appearance hides SOURCE and METHOD text, leaving only a method icon. Use Customize Source and Method or Reset appearance to restore the labels.",
+    "iconGroups": {
+      "identity": "Identity",
+      "security": "Security",
+      "servers": "Servers & storage",
+      "network": "Network",
+      "devices": "Devices",
+      "development": "Development",
+      "status": "Status & others"
+    }
+  }
+}

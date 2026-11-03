@@ -1,0 +1,21 @@
+node_modules/
+dist/
+coverage/
+*.tmxplug
+*.tmxplug.sig
+*.tsbuildinfo
+*.log
+.env
+.env.*
+.DS_Store
+.vscode/
+.idea/
+.claude_local/
+.claude/worktrees/
+
+# Local signing and authentication material
+secrets/
+*.pem
+*.p12
+*.pfx
+*.key

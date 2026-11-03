@@ -1,0 +1,46 @@
+{
+  "name": "termix-plugin-host-auth-badges",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Termix plugin that shows compact SSH authentication source and method badges in the host list.",
+  "keywords": [
+    "termix",
+    "termix-plugin",
+    "ssh",
+    "host-list",
+    "badges"
+  ],
+  "homepage": "https://github.com/Reydan46/termix-plugin-host-auth-badges#readme",
+  "bugs": {
+    "url": "https://github.com/Reydan46/termix-plugin-host-auth-badges/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Reydan46/termix-plugin-host-auth-badges.git"
+  },
+  "license": "MIT",
+  "author": "Reydan46",
+  "type": "module",
+  "scripts": {
+    "build": "termix-plugin build",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "typecheck": "tsc -p .",
+    "validate": "npm run build && termix-plugin validate",
+    "pack": "npm run validate && termix-plugin pack",
+    "test:sdk": "termix-plugin test"
+  },
+  "devDependencies": {
+    "@termix-ssh/plugin-sdk": "^1.0.22",
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.2.18",
+    "typescript": "~6.0.3",
+    "vitest": "^4.1.11"
+  },
+  "peerDependencies": {
+    "@termix-ssh/plugin-sdk": "^1.0.22",
+    "react": "^19.2.8"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "id": "host-auth-badges",
+  "name": "Host Auth Badges",
+  "version": "1.0.0",
+  "description": "Compact configurable SSH authentication source and method badges for the host list.",
+  "author": {
+    "name": "Reydan46",
+    "url": "https://github.com/Reydan46"
+  },
+  "license": "MIT",
+  "category": "Productivity",
+  "icon": "KeyRound",
+  "features": [
+    "See the SSH authentication source and method at a glance in the host list",
+    "Customize icons, text labels and colors separately for every category",
+    "Choose from 12 single-line layouts and 18 color palettes",
+    "Search more than 100 built-in icons without storing or accessing SSH secrets",
+    "Use Termix native host, folder and user settings with inherited defaults",
+    "Read-only badges with viewport-aware store subscriptions"
+  ],
+  "env": [],
+  "engine": {
+    "termix": ">=26.10.6",
+    "api": "^1.13"
+  },
+  "capabilities": [
+    "ui:surface"
+  ],
+  "contributes": {
+    "settings": {
+      "user": [
+        {
+          "key": "designer",
+          "type": "custom",
+          "component": "auth-badge-designer",
+          "default": "",
+          "group": "Badge designer"
+        },
+        {
+          "key": "enabled",
+          "type": "boolean",
+          "labelKey": "settings.enabled.label",
+          "descriptionKey": "settings.enabled.description",
+          "default": true,
+          "hidden": true
+        },
+        {
+          "key": "position",
+          "type": "select",
+          "labelKey": "settings.position.label",
+          "descriptionKey": "settings.position.description",
+          "default": "after",
+          "options": [
+            {
+              "value": "after",
+              "labelKey": "settings.position.after"
+            },
+            {
+              "value": "before",
+              "labelKey": "settings.position.before"
+            }
+          ],
+          "hidden": true
+        },
+        {
+          "key": "textSize",
+          "type": "number",
+          "labelKey": "settings.textSize.label",
+          "descriptionKey": "settings.textSize.description",
+          "default": 100,
+          "min": 60,
+          "max": 220,
+          "hidden": true
+        },
+        {
+          "key": "iconSize",
+          "type": "number",
+          "labelKey": "settings.iconSize.label",
+          "descriptionKey": "settings.iconSize.description",
+          "default": 100,
+          "min": 60,
+          "max": 260,
+          "hidden": true
+        },
+        {
+          "key": "sourceConfig",
+          "type": "string",
+          "default": "",
+          "hidden": true,
+          "labelKey": "settings.sourceConfig.label"
+        },
+        {
+          "key": "methodConfig",
+          "type": "string",
+          "default": "",
+          "hidden": true,
+          "labelKey": "settings.methodConfig.label"
+        },
+        {
+          "key": "layoutVariant",
+          "type": "string",
+          "default": "bare",
+          "hidden": true,
+          "labelKey": "settings.layoutVariant.label"
+        },
+        {
+          "key": "palettePreset",
+          "type": "string",
+          "default": "catppuccin",
+          "hidden": true,
+          "labelKey": "settings.palettePreset.label"
+        }
+      ],
+      "host": {
+        "fields": [
+          {
+            "key": "compositionOverride",
+            "type": "custom",
+            "component": "auth-badge-composition-override",
+            "default": "",
+            "defaultable": true,
+            "defaultLevels": [
+              "admin",
+              "user",
+              "folder"
+            ],
+            "labelKey": "settings.host.compositionOverride.label",
+            "descriptionKey": "settings.host.compositionOverride.description"
+          },
+          {
+            "key": "sourceOverride",
+            "type": "string",
+            "default": "",
+            "defaultable": true,
+            "defaultLevels": [
+              "admin",
+              "user",
+              "folder"
+            ],
+            "hidden": true,
+            "labelKey": "settings.host.sourceOverride.label",
+            "descriptionKey": "settings.host.sourceOverride.description"
+          },
+          {
+            "key": "methodOverride",
+            "type": "string",
+            "default": "",
+            "defaultable": true,
+            "defaultLevels": [
+              "admin",
+              "user",
+              "folder"
+            ],
+            "hidden": true,
+            "labelKey": "settings.host.methodOverride.label",
+            "descriptionKey": "settings.host.methodOverride.description"
+          }
+        ]
+      }
+    }
+  },
+  "locales": "locales",
+  "platforms": [
+    "linux",
+    "win32",
+    "darwin"
+  ],
+  "repository": "https://github.com/Reydan46/termix-plugin-host-auth-badges",
+  "docs": "https://github.com/Reydan46/termix-plugin-host-auth-badges/tree/main/docs"
+}
