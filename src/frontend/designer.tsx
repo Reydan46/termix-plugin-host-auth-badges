@@ -391,7 +391,7 @@ export function BadgeDesigner({values,setValue,running,onLiveChange,liveDirty=fa
     if(path==='palettePreset')return t(`ui.palettes.${value}`);
     if(path==='position')return t(`ui.positions.${value}`);
     if(path==='textSize'||path==='iconSize')return `${value}%`;
-    return value||'—';
+    return value||'-';
   };
   // Consolidate multi-key operations so Reset/Joined selection redraw all hosts once.
   const putMany=(changes:readonly (readonly [string,unknown])[])=>{

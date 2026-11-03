@@ -12,7 +12,7 @@ const pick = (input,key) => key.split('.').reduce((node,part)=>node?.[part],inpu
 
 test('release metadata identifies actual intended maintainer, stable plugin ID and version',()=>{
  assert.equal(manifest.id,'host-auth-badges');
- assert.equal(manifest.version,'1.0.0');
+ assert.equal(manifest.version,'1.0.1');
  assert.equal(manifest.author?.name,'Reydan46');
  assert.equal(manifest.author?.url,'https://github.com/Reydan46');
  assert.equal(manifest.repository,'https://github.com/Reydan46/termix-plugin-host-auth-badges');
@@ -54,7 +54,7 @@ test('branch policy: main is the only long-lived branch, dev-X.Y.Z is a temporar
  const docs=source('docs/publishing.md');
  assert.match(docs,/Default branch = main/);
  assert.match(source('CONTRIBUTING.md'),/`dev-1\.0\.0`/);
- assert.deepEqual(source('CHANGELOG.md').match(/^## \d+\.\d+\.\d+/gm),['## 1.0.0']);
+ assert.deepEqual(source('CHANGELOG.md').match(/^## \d+\.\d+\.\d+/gm),['## 1.0.1','## 1.0.0']);
 });
 
 test('both READMEs describe the same layouts, palettes, icons and settings',()=>{

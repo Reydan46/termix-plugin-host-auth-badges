@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+### Fixed
+
+- Replaced long dashes in a source comment, documentation and the empty-value placeholder with plain hyphens, as the registry rules require.
+
 ## 1.0.0
 
 ### Added

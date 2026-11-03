@@ -26,7 +26,7 @@ test('nested Source/Method icon, label, and custom color edits are diffed indepe
  const draft=normalizePreferences({sourceConfig:serializePart(from,'source'),methodConfig:serializePart(to,'method')});
  const changes=diffAppearance(saved,draft);
  assert.deepEqual(kv(changes,'sourceConfig.showIcon'),{path:'sourceConfig.showIcon',before:'off',after:'on'});
- assert.deepEqual(kv(changes,'sourceConfig.labels.credential'),{path:'sourceConfig.labels.credential',before:'—',after:'My name'});
+ assert.deepEqual(kv(changes,'sourceConfig.labels.credential'),{path:'sourceConfig.labels.credential',before:'-',after:'My name'});
  assert.equal(kv(changes,'sourceConfig.colors.host').after,'#123456');
  assert.equal(kv(changes,'methodConfig.icons.key').after,'fingerprint');
  assert.equal(kv(changes,'methodConfig.colors.password').after,'#654321');

@@ -34,7 +34,7 @@ Don't run Prettier over `src/` or `tests/`: several tests match the source text.
 `main` is the GitHub default and the only branch kept there. Work happens on a local `dev`; a release is cut
 from a temporary `dev-X.Y.Z` with the Release workflow, which merges it into `main` and deletes it.
 
-## Maintainer notes — Termix Host Auth Badges
+## Maintainer notes: Termix Host Auth Badges
 
 Version 1.0.0 is the first public release. Treat setting keys and icon IDs as stable compatibility contracts.
 

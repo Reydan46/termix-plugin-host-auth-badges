@@ -5,7 +5,7 @@ const display=(value:unknown):string=>{
   if(typeof value==='boolean')return value?'on':'off';
   if(typeof value==='number')return String(value);
   if(typeof value==='string')return value.slice(0,44);
-  return value==null?'—':'changed';
+  return value==null?'-':'changed';
 };
 export function diffAppearance(saved:DisplayPreferences,draft:DisplayPreferences):AppearanceChange[]{
   const changes:AppearanceChange[]=[];

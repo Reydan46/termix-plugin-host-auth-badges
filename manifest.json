@@ -1,7 +1,7 @@
 {
   "id": "host-auth-badges",
   "name": "Host Auth Badges",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Compact configurable SSH authentication source and method badges for the host list.",
   "author": {
     "name": "Reydan46",

@@ -1,7 +1,7 @@
 {
   "name": "termix-plugin-host-auth-badges",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Termix plugin that shows compact SSH authentication source and method badges in the host list.",
   "keywords": [
     "termix",

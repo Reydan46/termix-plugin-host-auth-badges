@@ -1,4 +1,4 @@
-/* Termix Host Auth Badges — scoped, theme-aware, no host DOM mutation. */
+/* Termix Host Auth Badges: scoped, theme-aware, no host DOM mutation. */
 [data-host-auth-badge] {
   --ha-gap: 4px;
   display: inline-flex; align-items: center; vertical-align: middle; flex: 0 0 auto;
