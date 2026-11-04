@@ -1,7 +1,7 @@
 {
   "plugin": {
     "name": "Host Auth Badges",
-    "description": "Compact configurable SSH authentication source and method badges for the host list."
+    "description": "Compact configurable authentication source and method badges for the host list."
   },
   "settings": {
     "enabled": {
@@ -149,7 +149,7 @@
     "icon": "icon",
     "textSize": "Text size",
     "iconSize": "Icon size",
-    "intro": "See how SSH login is configured without opening each host. Badges do not test the connection or reveal secrets.",
+    "intro": "See how login is configured without opening each host. Badges do not test the connection or reveal secrets.",
     "advancedTitle": "Customize Source and Method",
     "hiddenPart": "hidden",
     "unsavedTitle": "Unsaved changes",

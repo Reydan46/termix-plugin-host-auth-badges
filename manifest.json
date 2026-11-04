@@ -1,8 +1,8 @@
 {
   "id": "host-auth-badges",
   "name": "Host Auth Badges",
-  "version": "1.0.1",
-  "description": "Compact configurable SSH authentication source and method badges for the host list.",
+  "version": "1.0.2",
+  "description": "Compact configurable authentication source and method badges for the host list.",
   "author": {
     "name": "Reydan46",
     "url": "https://github.com/Reydan46"
@@ -11,10 +11,10 @@
   "category": "Productivity",
   "icon": "KeyRound",
   "features": [
-    "See the SSH authentication source and method at a glance in the host list",
+    "See the authentication source and method of SSH, RDP and other hosts at a glance",
     "Customize icons, text labels and colors separately for every category",
     "Choose from 12 single-line layouts and 18 color palettes",
-    "Search more than 100 built-in icons without storing or accessing SSH secrets",
+    "Search more than 100 built-in icons without storing or accessing secrets",
     "Use Termix native host, folder and user settings with inherited defaults",
     "Read-only badges with viewport-aware store subscriptions"
   ],

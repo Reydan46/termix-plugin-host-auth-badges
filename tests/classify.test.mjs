@@ -53,6 +53,62 @@ test("shared owner auth not provided -> unknown", () => {
   const result = classifyHost(h({ authType: "key", isShared: true, authOverrides: { ssh: { required: false, ownerAuthShared: false } } }), credentialMap);
   assert.equal(result.source, "unknown");
 });
+test("host with SSH off uses protocol login for the source", () => {
+  const cred = classifyHost(h({ enableSsh: false, authType: "password", protocolAuth: { rdp: { authType: "credential", credentialId: 2 } } }), credentialMap);
+  assert.equal(cred.source, "credential");
+  assert.equal(cred.method, "password");
+  const direct = classifyHost(h({ enableSsh: false, protocolAuth: { rdp: { authType: "direct" } } }), credentialMap);
+  assert.equal(direct.source, "host");
+});
+test("shared host with SSH off prefers recipient credential; none is host/none", () => {
+  const shared = classifyHost(h({ enableSsh: false, isShared: true, protocolAuth: { rdp: { authType: "credential" } }, authOverrides: { rdp: { credentialId: 2, required: true, ownerAuthShared: false } } }), credentialMap);
+  assert.deepEqual([shared.source, shared.method], ["credential", "password"]);
+  const none = classifyHost(h({ enableSsh: false, protocolAuth: { rdp: { authType: "none" } } }), credentialMap);
+  assert.deepEqual([none.source, none.method], ["host", "none"]);
+});
+test("foreign credential ids are never looked up locally", () => {
+  // id 1 exists locally; it must not be applied to another server's / owner's credential
+  for (const extra of [{ sharedCopy: true }, { isShared: true }]) {
+    const r = classifyHost(h({ authType: "credential", credentialId: 1, ...extra }), credentialMap);
+    assert.deepEqual([r.source, r.method, r.uncertain], ["credential", "unknown", true], JSON.stringify(extra));
+  }
+  const rdp = classifyHost(h({ enableSsh: false, sharedCopy: true, protocolAuth: { rdp: { authType: "credential", credentialId: 1 } } }), credentialMap);
+  assert.equal(rdp.method, "unknown");
+  const recipient = classifyHost(h({ authType: "credential", credentialId: 9, isShared: true, authOverrides: { ssh: { credentialId: 2, required: true, ownerAuthShared: true } } }), credentialMap);
+  assert.equal(recipient.method, "password");
+  // connectionOrigin only says where the connection starts; ids stay local
+  for (const connectionOrigin of ["local", "remote", null]) {
+    const own = classifyHost(h({ authType: "credential", credentialId: 1, connectionOrigin }), credentialMap);
+    assert.notEqual(own.method, "unknown", String(connectionOrigin));
+  }
+});
+test("protocol logins follow the main protocol and shared metadata", () => {
+  const pa = { vnc: { authType: "credential", credentialId: 3 }, rdp: { authType: "direct" } };
+  assert.deepEqual(classifyHost(h({ connectionType: "rdp", protocolAuth: pa }), credentialMap).source, "host");
+  const notShared = classifyHost(h({ connectionType: "rdp", isShared: true, protocolAuth: { rdp: { authType: "direct" } }, authOverrides: { rdp: { required: false, ownerAuthShared: false } } }), credentialMap);
+  assert.equal(notShared.reason, "shared-owner-auth-not-provided");
+  const overrideOnly = classifyHost(h({ connectionType: "rdp", isShared: true, authOverrides: { rdp: { credentialId: 2, required: true, ownerAuthShared: false } } }), credentialMap);
+  assert.deepEqual([overrideOnly.source, overrideOnly.method], ["credential", "password"]);
+  const qc = classifyHost(h({ connectionType: "rdp", quickConnectLogin: { protocol: "rdp", password: "x" } }), credentialMap);
+  assert.equal(qc.source, "host");
+  const sharedNoOverride = classifyHost(h({ isShared: true, authType: "password" }), credentialMap);
+  assert.deepEqual([sharedNoOverride.source, sharedNoOverride.uncertain], ["host", true]);
+});
+test("shared recipient with a folder credential is CRED, not unknown", () => {
+  const r = classifyHost(h({ authType: "key", isShared: true, authOverrides: { ssh: { required: false, ownerAuthShared: false, folderCredentialId: 2 } } }), credentialMap);
+  assert.deepEqual([r.source, r.method], ["credential", "password"]);
+});
+test("shared secretless host keeps agent/none, hidden owner login stays unknown", () => {
+  const ov = { ssh: { required: false, ownerAuthShared: false } };
+  assert.equal(classifyHost(h({ authType: "agent", isShared: true, authOverrides: ov }), credentialMap).method, "agent");
+  assert.equal(classifyHost(h({ authType: "key", isShared: true, authOverrides: ov }), credentialMap).source, "unknown");
+});
+test("protocol credential without an id inherits the folder/user default credential", () => {
+  const r = classifyHost(h({ enableSsh: false, authType: "credential", credentialId: 2, protocolAuth: { rdp: { authType: "credential", credentialId: null } } }), credentialMap);
+  assert.deepEqual([r.source, r.method], ["credential", "password"]);
+  const none = classifyHost(h({ enableSsh: false, authType: "password", protocolAuth: { rdp: { authType: "credential", credentialId: null } } }), credentialMap);
+  assert.equal(none.reason, "credential-id-unavailable");
+});
 test("non SSH host is excluded", () => {
   assert.equal(classifyHost(h({ connectionType: "rdp", enableSsh: false }), credentialMap).reason, "non-ssh-host");
   assert.equal(classifyHost(h({ connectionType: "rdp", enableSsh: true, authType: "key" }), credentialMap).method, "key");

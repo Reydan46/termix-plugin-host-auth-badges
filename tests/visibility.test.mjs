@@ -31,7 +31,7 @@ test('unmounting a hidden/disabled badge re-enables appearance subscription for 
  const visibility=read('visibility.ts');
  assert.match(visibility,/if\(!element\)setNear\(true\)/);
  const frontend=read('index.tsx');
- assert.match(frontend,/const needsCredentials = near && effective.enabled && hasSsh/);
+ assert.match(frontend,/const needsCredentials = near && effective.enabled;/);
  assert.match(frontend,/useVisibleSnapshot\(credentials,needsCredentials\)/);
  assert.match(frontend,/useVisibleSnapshot\(preferences,near\)/);
 });

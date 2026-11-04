@@ -57,10 +57,10 @@ export function activate(app: TermixApp): void {
     const ownHostSettings = host.pluginSettings?.["host-auth-badges"];
     // Resolved on every render: host records can be mutated in place by Termix.
     const effective = resolveForHost(userPrefs, ownHostSettings);
-    // Hosts that are disabled, offscreen or non-SSH skip credential updates;
-    // appearance stays subscribed so enabling a badge shows it immediately.
-    const hasSsh = !host.connectionType || host.connectionType === "ssh" || host.enableSsh === true;
-    const needsCredentials = near && effective.enabled && hasSsh;
+    // Hosts that are disabled or offscreen skip credential updates; appearance
+    // stays subscribed so enabling a badge shows it immediately. Non-SSH
+    // protocols (RDP, ...) can use saved credentials too.
+    const needsCredentials = near && effective.enabled;
     const creds = useVisibleSnapshot(credentials,needsCredentials);
     const visibleCredentials = needsCredentials && creds.userId === currentUserId ? creds.byId : EMPTY_CREDENTIALS;
     const info = classifyHost(host, visibleCredentials, providersLoaded ? registeredProviders : undefined);

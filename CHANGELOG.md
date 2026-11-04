@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2
+
+### Fixed
+
+- Fixed the SOURCE badge for hosts without SSH (RDP and others) and for shared hosts.
+
 ## 1.0.1
 
 ### Fixed

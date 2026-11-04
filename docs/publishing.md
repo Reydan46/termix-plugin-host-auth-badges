@@ -23,7 +23,7 @@ npm run pack
 
 Unit tests cannot validate all SDK semantics. Before a release, check in a real Termix:
 
-- `SOURCE` and `METHOD` on password, key, both, agent, custom and unknown SSH hosts.
+- `SOURCE` and `METHOD` on password, key, both, agent, custom and unknown SSH hosts, and on RDP hosts with SSH off.
 - Palette swatches against real host badges, and all Layouts in desktop and web.
 - Host → Folder → User → Server inheritance, and that Save applies the changes.
 - That clearing each override with `setValue(field, null)` restores inheritance. The public custom settings SDK does not document this as a native inherit action, so it must be confirmed, not assumed.

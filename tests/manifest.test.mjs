@@ -6,7 +6,7 @@ const manifest=load('manifest.json'),pkg=load('package.json'),en=load('locales/e
 const lookup=(o,key)=>key.split('.').reduce((value,name)=>value?.[name],o);
 const userKeys=['designer','enabled','position','textSize','iconSize','sourceConfig','methodConfig','layoutVariant','palettePreset'];
 test('version and minimal permissions/capabilities agree',()=>{
- assert.equal(manifest.version,'1.0.1');assert.equal(manifest.version,pkg.version);
+ assert.equal(manifest.version,'1.0.2');assert.equal(manifest.version,pkg.version);
  assert.deepEqual(manifest.capabilities,['ui:surface']);assert.deepEqual(manifest.env,[]);
 });
 test('manifest declares exactly the user settings the UI uses',()=>{
