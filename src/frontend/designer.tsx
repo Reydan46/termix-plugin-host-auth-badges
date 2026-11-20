@@ -6,7 +6,7 @@ import {
 } from './appearance';
 import {
   effectiveColor, LAYOUT_VARIANTS, PALETTE_PRESETS, PALETTES, editableLabel,
-  hasModifiedLabels, isLabelModified, withDefaultLabels, withUpdatedLabel,
+  hasModifiedLabels, HOST_LIST_STYLING, isLabelModified, withDefaultLabels, withUpdatedLabel,
   type LayoutVariant, type PalettePreset,
 } from './design';
 import { BadgePreview, LayoutSample } from './preview';
@@ -270,7 +270,7 @@ function PartEditor({kind,config,onChange,palette='signature',disabled=false}:{
     <div className="ha-part-head">
       <strong>{t(kind==='source'?'ui.source':'ui.method')}</strong>
       <div className="ha-part-tools">
-        <Toggle value={config.showIcon} disabled={disabled} onChange={showIcon=>update({showIcon})} title={t('ui.toggleIcons')}>{t('ui.icon')}</Toggle>
+        {HOST_LIST_STYLING&&<Toggle value={config.showIcon} disabled={disabled} onChange={showIcon=>update({showIcon})} title={t('ui.toggleIcons')}>{t('ui.icon')}</Toggle>}
         <Toggle value={config.showLabel} disabled={disabled} onChange={showLabel=>update({showLabel})} title={t('ui.toggleLabels')}>{t('ui.text')}</Toggle>
         <button type="button" className="ha-small-button ha-reset-labels" data-ha-visible={hasModifiedLabels(config,kind) ? 'true' : 'false'}
           disabled={disabled || !hasModifiedLabels(config,kind)} aria-hidden={!hasModifiedLabels(config,kind)}
@@ -284,19 +284,23 @@ function PartEditor({kind,config,onChange,palette='signature',disabled=false}:{
       const modified=isLabelModified(config,kind,key);
       const iconChanged=isIconModified(config,kind,key);
       const colorChanged=isColorModified(config,key);
-      return <div key={key} className="ha-edit-row">
+      return <div key={key} className="ha-edit-row" data-ha-plain={HOST_LIST_STYLING?undefined:"true"}>
         <span className="ha-value-name">{t(`ui.values.${key}`)}</span>
+        {HOST_LIST_STYLING&&<>
         <button type="button" className="ha-icon-button" aria-label={`${t('ui.chooseIcon')}: ${t(`ui.values.${key}`)}`} title={t('ui.chooseIcon')}
           disabled={disabled} onClick={event=>{lastIconButton.current=event.currentTarget;setIconKey(key);}} style={{color:accent}}><BadgeIcon name={iconFor(config,kind,key)}/></button>
         <button type="button" className="ha-item-reset" data-ha-visible={iconChanged} disabled={disabled||!iconChanged} tabIndex={iconChanged?0:-1} aria-hidden={!iconChanged} title={t('ui.resetIcon')} aria-label={`${t('ui.resetIcon')}: ${t(`ui.values.${key}`)}`} onClick={()=>commit(resetIcon(pendingPart.current,key))}>↺</button>
+        </>}
         <input className="ha-label-input" type="text" maxLength={32} aria-label={`${t('ui.label')}: ${t(`ui.values.${key}`)}`}
           value={label}
           disabled={disabled} onChange={e=>setLabel(key,e.target.value)}
           title={t('ui.label')}/>
         <button className="ha-item-reset" type="button" data-ha-visible={modified} disabled={disabled||!modified} tabIndex={modified?0:-1} aria-hidden={!modified} onClick={()=>resetLabel(key)} title={t('ui.resetLabel')} aria-label={`${t('ui.resetLabel')}: ${t(`ui.values.${key}`)}`}>↺</button>
+        {HOST_LIST_STYLING&&<>
         <input className="ha-color" type="color" disabled={disabled||palette==='monochrome'} value={accent} onChange={e=>setColor(key,e.target.value)}
           aria-label={`${t('ui.color')}: ${t(`ui.values.${key}`)}`} title={palette==='monochrome'?t('ui.monoHint'):t('ui.color')}/>
         <button type="button" className="ha-item-reset" data-ha-visible={colorChanged} disabled={disabled||!colorChanged} tabIndex={colorChanged?0:-1} aria-hidden={!colorChanged} title={t('ui.resetColor')} aria-label={`${t('ui.resetColor')}: ${t(`ui.values.${key}`)}`} onClick={()=>commit(resetColor(pendingPart.current,key))}>↺</button>
+        </>}
       </div>;
     })}</div>
     {iconKey!==null&&<IconDialog selected={iconFor(config,kind,iconKey)} onSelect={icon=>setIcon(iconKey,icon)} onClose={()=>{setIconKey(null);lastIconButton.current?.focus();}}/>}
@@ -314,21 +318,21 @@ function AppearanceSettingsSections({prefs,running,onChange,onPartChange}:{
 }){
   const {t}=useTranslation();
   const [advancedOpen,setAdvancedOpen]=useState(false);
-  const describe=(config:PartAppearance)=>!config.enabled||(!config.showIcon&&!config.showLabel)
-    ?t('ui.hiddenPart'):[config.showIcon&&t('ui.icon'),config.showLabel&&t('ui.text')].filter(Boolean).join(' + ');
+  const describe=(config:PartAppearance)=>!config.enabled||(!config.showLabel&&!(HOST_LIST_STYLING&&config.showIcon))
+    ?t('ui.hiddenPart'):[HOST_LIST_STYLING&&config.showIcon&&t('ui.icon'),config.showLabel&&t('ui.text')].filter(Boolean).join(' + ');
   const set=(key:string,value:unknown)=>onChange([[key,value]]);
   return <>
-    <AppearancePreview preferences={prefs}/>
-    <div className="ha-section-row"><strong>{t('ui.layouts')}</strong>
+    {HOST_LIST_STYLING&&<AppearancePreview preferences={prefs}/>}
+    {HOST_LIST_STYLING&&<div className="ha-section-row"><strong>{t('ui.layouts')}</strong>
       <div className="ha-layout-controls">
         <div className="ha-positions" role="group" aria-label={t('ui.position')}>
           {(['after','before'] as const).map(pos=><button type="button" className="ha-segment" aria-pressed={prefs.position===pos}
             key={pos} disabled={!running} onClick={()=>set('position',pos)}>{t(`ui.positions.${pos}`)}</button>)}
         </div>
       </div>
-    </div>
-    <LayoutPicker prefs={prefs} disabled={!running} onSelect={variant=>onChange([['layoutVariant',variant]])}/>
-    <div className="ha-tuning">
+    </div>}
+    {HOST_LIST_STYLING&&<LayoutPicker prefs={prefs} disabled={!running} onSelect={variant=>onChange([['layoutVariant',variant]])}/>}
+    {HOST_LIST_STYLING&&<div className="ha-tuning">
       <div className="ha-tuning-head"><strong>{t('ui.colors')}</strong></div>
       <PalettePicker value={prefs.palettePreset} disabled={!running} onSelect={value=>set('palettePreset',value)}/>
       <div className="ha-size-grid">
@@ -337,7 +341,7 @@ function AppearanceSettingsSections({prefs,running,onChange,onPartChange}:{
         <SizeControl label={t('ui.iconSize')} value={prefs.iconSize} min={60} max={260} disabled={!running}
           onChange={value=>set('iconSize',value)}/>
       </div>
-    </div>
+    </div>}
     <Disclosure title={t('ui.advancedTitle')}
       summary={`${t('ui.source')}: ${describe(prefs.sourceConfig)} · ${t('ui.method')}: ${describe(prefs.methodConfig)}`}
       open={advancedOpen} onToggle={()=>setAdvancedOpen(open=>!open)}>
@@ -423,7 +427,7 @@ export function BadgeDesigner({values,setValue,running,onLiveChange,liveDirty=fa
       </label>
     </div>
     <p className="ha-intro">{t('ui.intro')}</p>
-    {methodOnly && <p className="ha-method-only-warning" role="status">{t('ui.methodOnlyWarning')}</p>}
+    {HOST_LIST_STYLING && methodOnly && <p className="ha-method-only-warning" role="status">{t('ui.methodOnlyWarning')}</p>}
     <AppearanceSettingsSections prefs={prefs} running={running} onChange={putMany}
       onPartChange={(kind,value)=>updatePart(kind,value)}/>
     <div className="ha-footer">
@@ -475,26 +479,29 @@ function HostInheritanceControls({effective,myDefaults,values,running,onClear}: 
   const effectiveFields=inheritanceSummary(values);
   const dialogId=useId();
   const dialogRef=useRef<HTMLDivElement>(null);
+  // Without host-list styling only the part texts can differ, so only they are listed.
+  const groupKeys=HOST_GROUP_KEYS.filter(key=>HOST_LIST_STYLING||key!=='compositionOverride');
+  const partSummary=(config:PartAppearance)=>[HOST_LIST_STYLING&&config.showIcon?t('ui.icon'):null,config.showLabel?t('ui.text'):null].filter(Boolean).join(' + ') || t('ui.hiddenPart');
   const summaries:Record<HostGroupKey,string>={
     compositionOverride:`${t(`ui.layout.${effective.layoutVariant}`)} · ${t(`ui.palettes.${effective.palettePreset}`)} · ${effective.textSize}% / ${effective.iconSize}%`,
-    sourceOverride:[effective.sourceConfig.showIcon?t('ui.icon'):null,effective.sourceConfig.showLabel?t('ui.text'):null].filter(Boolean).join(' + ') || t('ui.hiddenPart'),
-    methodOverride:[effective.methodConfig.showIcon?t('ui.icon'):null,effective.methodConfig.showLabel?t('ui.text'):null].filter(Boolean).join(' + ') || t('ui.hiddenPart'),
+    sourceOverride:partSummary(effective.sourceConfig),
+    methodOverride:partSummary(effective.methodConfig),
   };
   return <section className="ha-inherit-panel">
     <div className="ha-inherit-heading"><strong>{t('ui.inheritHeading')}</strong>
       <button type="button" className="ha-small-button ha-inherit-all" disabled={!running} onClick={()=>setConfirmAll(true)}>{t('ui.inheritResetAll')}</button>
     </div>
     <p className="ha-inherit-note">{t('ui.inheritLimit')}</p>
-    <div className="ha-inherit-groups">{HOST_GROUP_KEYS.map(key=><div key={key} className="ha-inherit-group">
+    <div className="ha-inherit-groups">{groupKeys.map(key=><div key={key} className="ha-inherit-group">
       <span className="ha-inherit-group-label">{t(GROUP_LABEL_KEYS[key])}</span>
       <span className="ha-inherit-group-value" title={t('ui.inheritEffectiveInfo')}>{summaries[key]}</span>
       <button type="button" className="ha-small-button ha-inherit-single" disabled={!running} onClick={()=>onClear([key])}
         title={t('ui.inheritSingleHint')}>{t('ui.inheritSingle')}</button>
     </div>)}</div>
-    <button type="button" className="ha-inherit-info-toggle" aria-expanded={expanded} onClick={()=>setExpanded(v=>!v)}>
+    {HOST_LIST_STYLING&&<button type="button" className="ha-inherit-info-toggle" aria-expanded={expanded} onClick={()=>setExpanded(v=>!v)}>
       {t('ui.inheritCompare')} <span aria-hidden="true">{expanded?'▴':'▾'}</span>
-    </button>
-    {expanded&&<div className="ha-inherit-comparison">
+    </button>}
+    {HOST_LIST_STYLING&&expanded&&<div className="ha-inherit-comparison">
       <span>{t('ui.inheritMyDefaults')}:</span>
       <strong>{t(`ui.layout.${myDefaults.layoutVariant}`)} · {t(`ui.palettes.${myDefaults.palettePreset}`)} · {myDefaults.textSize}% / {myDefaults.iconSize}%</strong>
       <small>{t('ui.inheritParentUnknown')}</small>
@@ -513,14 +520,14 @@ function HostInheritanceControls({effective,myDefaults,values,running,onClear}: 
         }}>
         <strong id={dialogId}>{t('ui.inheritConfirmTitle')}</strong>
         <p className="ha-inherit-note">{t('ui.inheritConfirmDescription')}</p>
-        <ul>{effectiveFields.map(({key,present})=><li key={key}>
+        <ul>{effectiveFields.filter(({key})=>groupKeys.includes(key)).map(({key,present})=><li key={key}>
           <strong>{t(GROUP_LABEL_KEYS[key])}</strong>: {summaries[key]}
           <span className="ha-inherit-current"> · {present?t('ui.inheritEffective'):t('ui.inheritUnset')}</span>
         </li>)}</ul>
         <p className="ha-inherit-note">{t('ui.inheritAfterSave')}</p>
         <div className="ha-inherit-actions">
           <button type="button" className="ha-small-button" autoFocus onClick={()=>setConfirmAll(false)}>{t('ui.inheritCancel')}</button>
-          <button type="button" className="ha-reset-button ha-inherit-confirm" onClick={()=>{onClear(HOST_GROUP_KEYS);setConfirmAll(false)}}>{t('ui.inheritConfirm')}</button>
+          <button type="button" className="ha-reset-button ha-inherit-confirm" onClick={()=>{onClear(groupKeys);setConfirmAll(false)}}>{t('ui.inheritConfirm')}</button>
         </div>
       </div>
     </div>}

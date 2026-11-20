@@ -11,10 +11,11 @@ The badges only summarize what Termix reports. They never test a login, read sec
 
 ## Features
 
-- 12 single-line layouts and 18 palettes.
-- Your own icon, label and color for every SOURCE and METHOD value, each with its own reset.
-- 104 searchable icons, adjustable text and icon sizes, and a live preview.
+- Your own short text for every SOURCE and METHOD value, each with its own reset, and a switch for each part.
+- Enabled per user, folder or host.
 - English and Russian interface.
+
+On Termix 26.11.2 the host list draws the badge from plain data (text and a tone). The designer for icons (104), colors, layouts (12), palettes (18), sizes and position is hidden until Termix can draw them there.
 
 ## Install
 

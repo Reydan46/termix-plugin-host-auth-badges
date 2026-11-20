@@ -165,6 +165,7 @@
 
 .ha-part-rows { display:flex; flex-direction:column; }
 .ha-edit-row { display:grid; grid-template-columns:minmax(48px,.85fr) 24px 15px minmax(44px,1.2fr) 15px 23px 15px; gap:3px; align-items:center; height:29px; position:relative; }
+.ha-edit-row[data-ha-plain] { grid-template-columns:minmax(48px,.85fr) minmax(44px,1.6fr) 15px; }
 .ha-value-name { color:var(--muted-foreground,#b7b7b7); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:10px; }
 .ha-icon-button { height:24px; width:24px; display:flex; justify-content:center; align-items:center; border:1px solid var(--border,#555); background:var(--background,#222); border-radius:5px; }
 .ha-icon-button .ha-icon, .ha-icon-cell .ha-icon { height:15px; width:15px; }

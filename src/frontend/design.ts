@@ -128,3 +128,8 @@ export function withDefaultLabels(config:PartAppearance,kind:PartKind,key?:strin
   if(key)delete labels[key];else for(const value of Object.keys(SHORT_LABELS[kind]))delete labels[value];
   return {...config,labels,showLabel:true};
 }
+
+/** Termix 26.11.2 draws a host row badge from plain data (text and a tone), so icons, colors,
+ * layouts and sizes cannot reach the host list. Their controls stay hidden until a Termix
+ * release can draw them; set this to true then. */
+export const HOST_LIST_STYLING=false;

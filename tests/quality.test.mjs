@@ -74,7 +74,7 @@ test('only changed host override group is parsed and other parts retain referenc
 });
 test('host renderer re-evaluates current authentication and effective settings on every core host update',()=>{
  const frontend=read('src/frontend/index.tsx');
- for(const value of ['host.pluginSettings','resolveForHost(userPrefs, ownHostSettings)','classifyHost(host, visibleCredentials','AuthBadgeView info={info}'])
+ for(const value of ['host.pluginSettings','resolveForHost(userPrefs, host.pluginSettings','classifyHost(host, visibleCredentials','useValue: useAuthBadges'])
    assert.ok(frontend.includes(value),`missing correctness path ${value}`);
  assert.doesNotMatch(frontend,/useMemo\(/);
 });

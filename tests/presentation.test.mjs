@@ -36,3 +36,17 @@ test('malformed or oversized JSON does not crash the app',()=>{
  const p=readPart('{broken','source');assert.deepEqual(p,defaultsFor('source'));
  const q=readPart('['.repeat(17000),'method');assert.deepEqual(q,defaultsFor('method'));
 });
+
+test('host list texts follow Enabled and the Text toggle; styling controls stay hidden for now',async()=>{
+ const {listBadgeTexts}=await import('../src/frontend/presentation.ts');
+ const {normalizePreferences}=await import('../src/frontend/preferences.ts');
+ const {HOST_LIST_STYLING}=await import('../src/frontend/design.ts');
+ assert.equal(HOST_LIST_STYLING,false);
+ const prefs=normalizePreferences({});
+ const info={source:'credential',method:'password',reason:'ssh'};
+ assert.ok(listBadgeTexts(info,prefs).length>=1);
+ assert.deepEqual(listBadgeTexts(info,{...prefs,enabled:false}),[]);
+ assert.deepEqual(listBadgeTexts({...info,reason:'non-ssh-host'},prefs),[]);
+ const noText={...prefs,sourceConfig:{...prefs.sourceConfig,showLabel:false},methodConfig:{...prefs.methodConfig,showLabel:false}};
+ assert.deepEqual(listBadgeTexts(info,noText),[]);
+});

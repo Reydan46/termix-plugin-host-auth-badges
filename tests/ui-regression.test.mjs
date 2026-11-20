@@ -8,18 +8,17 @@ const preview=source('src/frontend/preview.tsx');
 const designer=source('src/frontend/designer.tsx');
 const view=source('src/frontend/view.tsx');
 const index=source('src/frontend/index.tsx');
-const visibility=source('src/frontend/visibility.ts');
 
 test('every layout variant has a stylesheet rule and is rendered through data-ha-variant',()=>{
  assert.match(view,/data-ha-variant=\{preferences\.layoutVariant\}/);
  for(const variant of LAYOUT_VARIANTS)assert.ok(css.includes(`data-ha-variant="${variant}"`),`missing ${variant}`);
 });
 
-test('preview uses neutral synthetic hosts, ignores Enabled and shares the host-row renderer',()=>{
+test('preview uses neutral synthetic hosts, ignores Enabled and draws badges from the same classification as the host row',()=>{
  assert.equal((preview.match(/name:'/g)||[]).length,9);
  assert.match(preview,/const demoPrefs = \{ \.\.\.preferences, enabled: true \}/);
  assert.match(preview,/<AuthBadgeView info=\{sample\.info\} preferences=\{demoPrefs\}/);
- assert.match(index,/<AuthBadgeView info=\{info\}/);
+ assert.match(index,/useValue: useAuthBadges/);
 });
 
 test('host and folder settings use one composition editor',()=>{
@@ -85,12 +84,9 @@ test('label editing preserves the whole part state',()=>{
  assert.match(designer,/resetColor\(pendingPart\.current,key\)/);
 });
 
-test('viewport gating uses one shared IntersectionObserver and no DOM queries of Termix',()=>{
- assert.match(index,/useVisibleSnapshot\(preferences,near\)/);
- assert.match(index,/useVisibleSnapshot\(credentials,needsCredentials\)/);
- assert.match(visibility,/IntersectionObserver/);
- assert.match(visibility,/rootMargin:'160px 0px'/);
- assert.doesNotMatch(visibility,/document\.querySelector|localStorage|fetch\(/);
+test('the host row is data the shell draws, so it needs no frame per host',()=>{
+ assert.match(index,/useValue: useAuthBadges/);
+ assert.doesNotMatch(index,/IntersectionObserver|document.querySelector/);
 });
 
 test('styles use theme tokens and no global Termix selectors',()=>{

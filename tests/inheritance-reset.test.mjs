@@ -48,7 +48,7 @@ test('reset all is guarded by an explicit confirmation dialog and never calls Sa
  assert.match(designer,/setConfirmAll\(true\)/);
  assert.match(designer,/role="dialog" aria-modal="true"/);
  assert.match(designer,/dialogRef/);
- assert.match(designer,/onClear\(HOST_GROUP_KEYS\)/);
+ assert.match(designer,/onClear\(groupKeys\)/);
  assert.match(designer,/for\(const key of keys\)setValue\(key,null\)/);
  assert.doesNotMatch(designer,/useSettings\('host'/);
 });

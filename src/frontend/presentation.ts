@@ -19,3 +19,15 @@ export function badgeLabels(info:AuthInfo,prefs:DisplayPreferences){
   if(!source&&!method)return null;
   return {source,method};
 }
+
+/** Host list badge texts. The shell draws text only, so a part shows when it is enabled and its Text toggle is on. */
+export function listBadgeTexts(info:AuthInfo,prefs:DisplayPreferences){
+  if(!prefs.enabled||info.reason==='non-ssh-host')return [];
+  const out:{kind:PartKind;value:string;text:string}[]=[];
+  for(const [kind,value,config] of [['source',info.source,prefs.sourceConfig],['method',info.method,prefs.methodConfig]] as const){
+    if(!config.enabled||!config.showLabel)continue;
+    const text=config.labels[value]??SHORT_LABELS[kind][value]??'?';
+    if(text)out.push({kind,value,text});
+  }
+  return out;
+}

@@ -1,14 +1,13 @@
 import { useEffect, useSyncExternalStore } from "react";
 import {
   listCredentials, useCurrentUser, useSettings, useSshAuthTypes, useTranslation,
-  type PluginHostRecord, type SettingsComponentProps, type TermixApp,
+  type DataResult, type DataValue, type PluginHostRecord, type SettingsComponentProps, type TermixApp,
 } from "@termix-ssh/plugin-sdk/frontend";
 import { classifyHost, type CredentialIndex } from "./classify";
 import { createCredentialStore } from "./store";
 import { createPreferenceStore, normalizePreferences, resolveForHost } from "./preferences";
-import { AuthBadgeView } from "./view";
+import { listBadgeTexts } from "./presentation";
 import { BadgeDesigner, CompositionHostOverride } from "./designer";
-import { useBadgeVisibility,useVisibleSnapshot } from "./visibility";
 import "./badge.css";
 
 const CREDENTIAL_REFRESH_MS = 120_000;
@@ -45,26 +44,36 @@ export function activate(app: TermixApp): void {
   // A temporary in-memory draft updates currently mounted HostBadge instances.
   function LiveBadgeDesigner(props: SettingsComponentProps) {
     const previewState = useSyncExternalStore(preferences.subscribe, preferences.getSnapshot, preferences.getSnapshot);
+    // This frame has its own stores: the saved values come from the settings it reads.
+    const { values, loaded } = useSettings("user");
+    const key = loaded ? JSON.stringify(values) : "";
+    useEffect(() => { preferences.setSaved(normalizePreferences(loaded ? values : {})); }, [loaded, key]);
     useEffect(() => () => preferences.clearDraft(), []);
     return <BadgeDesigner {...props} onLiveChange={preferences.setDraft} liveDirty={previewState.dirty} savedPreferences={previewState.saved} currentPreferences={previewState.preferences}/>;
   }
-  function HostBadge({ host }: { host: PluginHostRecord }) {
+  /** Runs once per visible row in the background frame; the shell draws the result. */
+  function useAuthBadges(host: PluginHostRecord): DataResult {
     const { t } = useTranslation();
-    const currentUserId = useCurrentUser()?.userId ?? '';
+    const currentUserId = useCurrentUser()?.userId ?? "";
     const { types: registeredProviders, loaded: providersLoaded } = useSshAuthTypes();
-    const {near,badgeRef}=useBadgeVisibility();
-    const userPrefs = useVisibleSnapshot(preferences,near);
-    const ownHostSettings = host.pluginSettings?.["host-auth-badges"];
-    // Resolved on every render: host records can be mutated in place by Termix.
-    const effective = resolveForHost(userPrefs, ownHostSettings);
-    // Hosts that are disabled or offscreen skip credential updates; appearance
-    // stays subscribed so enabling a badge shows it immediately. Non-SSH
-    // protocols (RDP, ...) can use saved credentials too.
-    const needsCredentials = near && effective.enabled;
-    const creds = useVisibleSnapshot(credentials,needsCredentials);
-    const visibleCredentials = needsCredentials && creds.userId === currentUserId ? creds.byId : EMPTY_CREDENTIALS;
+    const userPrefs = useSyncExternalStore(preferences.subscribe, preferences.get, preferences.get);
+    const effective = resolveForHost(userPrefs, host.pluginSettings?.["host-auth-badges"]);
+    const creds = useSyncExternalStore(credentials.subscribe, credentials.get, credentials.get);
+    const visibleCredentials = effective.enabled && creds.userId === currentUserId ? creds.byId : EMPTY_CREDENTIALS;
+    if (!effective.enabled) return null;
     const info = classifyHost(host, visibleCredentials, providersLoaded ? registeredProviders : undefined);
-    return <AuthBadgeView info={info} preferences={effective} t={t} badgeRef={badgeRef}/>;
+    const texts = listBadgeTexts(info, effective);
+    if (texts.length === 0) return null;
+    const method = info.method === "custom" && info.customType ? info.customType : t(`method.full.${info.method}`);
+    const tooltip = [
+      `${t("tooltip.source")}: ${t(`source.${info.source}`)}`,
+      `${t("tooltip.method")}: ${method}`,
+      ...(info.uncertain ? [t("tooltip.uncertain")] : []),
+    ].join(" · ");
+    const parts: DataValue[] = texts.map(({ kind, text }) => ({
+      shape: "badge", label: text, tone: kind === "source" ? "default" : "muted", tooltip,
+    }));
+    return parts;
   }
   app.registerSettingsComponent("auth-badge-designer", LiveBadgeDesigner);
   app.registerSettingsComponent("auth-badge-composition-override", CompositionHostOverride);
@@ -72,5 +81,5 @@ export function activate(app: TermixApp): void {
     actionId: "host-auth-badges.metadata-sync", titleKey: "plugin.name",
     kind: "component", component: MetadataSync,
   });
-  app.registerHostBadge({ id: "auth-summary", when: () => true, component: HostBadge, order: 80 });
+  app.registerHostBadge({ id: "auth-summary", when: () => true, useValue: useAuthBadges, order: 80 });
 }

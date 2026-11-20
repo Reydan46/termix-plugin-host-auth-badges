@@ -1,7 +1,7 @@
 {
   "id": "host-auth-badges",
   "name": "Host Auth Badges",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Compact configurable authentication source and method badges for the host list.",
   "author": {
     "name": "Reydan46",
@@ -20,8 +20,8 @@
   ],
   "env": [],
   "engine": {
-    "termix": ">=26.10.6",
-    "api": "^1.13"
+    "termix": ">=26.11.2",
+    "api": "^2.0.0"
   },
   "capabilities": [
     "ui:surface"

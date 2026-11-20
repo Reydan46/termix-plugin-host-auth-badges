@@ -1,7 +1,7 @@
 {
   "name": "termix-plugin-host-auth-badges",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Termix plugin that shows compact authentication source and method badges in the host list.",
   "keywords": [
     "termix",
@@ -31,14 +31,20 @@
     "test:sdk": "termix-plugin test"
   },
   "devDependencies": {
-    "@termix-ssh/plugin-sdk": "^1.0.22",
+    "@termix-ssh/plugin-sdk": "^2.10.1",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
     "@types/node": "^26.2.0",
     "@types/react": "^19.2.18",
+    "i18next": "^26.7.2",
+    "jsdom": "^29.1.1",
+    "react-i18next": "^17.1.13",
+    "sonner": "^2.0.8",
     "typescript": "~6.0.3",
     "vitest": "^4.1.11"
   },
   "peerDependencies": {
-    "@termix-ssh/plugin-sdk": "^1.0.22",
+    "@termix-ssh/plugin-sdk": "^2.10.1",
     "react": "^19.2.8"
   },
   "engines": {
